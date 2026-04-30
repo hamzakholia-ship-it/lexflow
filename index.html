@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexFlow — AI Corporate Formation Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1C2B3A;
+  --navy-light: #2A3F54;
+  --teal: #0F6E56;
+  --teal-light: #E6F3EF;
+  --teal-mid: #C2DDD6;
+  --bg: #F7F6F2;
+  --white: #FFFFFF;
+  --border: #E4E0D8;
+  --text: #1C2B3A;
+  --text-mid: #4A5568;
+  --text-light: #8A93A0;
+  --sidebar-w: 240px;
+  --header-h: 60px;
+  --shadow: 0 1px 3px rgba(28,43,58,0.08), 0 4px 12px rgba(28,43,58,0.04);
+  --shadow-md: 0 4px 16px rgba(28,43,58,0.1), 0 1px 4px rgba(28,43,58,0.06);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── SIDEBAR ────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo-mark {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px;
+  color: #FFFFFF;
+  letter-spacing: -0.5px;
+}
+
+.logo-mark span {
+  color: #4DC9A8;
+}
+
+.logo-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.sidebar-section {
+  padding: 20px 12px 8px;
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.6);
+  font-size: 13.5px;
+  font-weight: 400;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.9);
+}
+
+.nav-item.active {
+  background: rgba(77,201,168,0.15);
+  color: #4DC9A8;
+  font-weight: 500;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 4px;
+  width: 2px;
+  background: #4DC9A8;
+  border-radius: 0 2px 2px 0;
+}
+
+.nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
+
+.nav-badge {
+  margin-left: auto;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.nav-item.active .nav-badge {
+  background: rgba(77,201,168,0.2);
+  color: #4DC9A8;
+}
+
+.nav-badge.soon {
+  background: rgba(255,200,100,0.15);
+  color: rgba(255,200,100,0.7);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.firm-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.firm-avatar {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  flex-shrink: 0;
+}
+
+.firm-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); }
+.firm-plan { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  height: var(--header-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.breadcrumb span { color: var(--text); font-weight: 500; }
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--teal-light);
+  color: var(--teal);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.header-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.content {
+  padding: 28px;
+  flex: 1;
+}
+
+/* ── PAGES ───────────────────────────────────────────────── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── DASHBOARD ───────────────────────────────────────────── */
+.page-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.page-sub {
+  font-size: 13.5px;
+  color: var(--text-mid);
+  margin-bottom: 28px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-sub {
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.card-action {
+  font-size: 12px;
+  color: var(--teal);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.card-body { padding: 0; }
+
+.entity-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 120px 90px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background 0.1s;
+  cursor: pointer;
+}
+
+.entity-row:hover { background: var(--bg); }
+.entity-row:last-child { border-bottom: none; }
+
+.entity-name { font-size: 13px; font-weight: 500; color: var(--navy); }
+.entity-type { font-size: 11.5px; color: var(--text-light); margin-top: 1px; }
+
+.juri-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg);
+  color: var(--text-mid);
+  border: 1px solid var(--border);
+}
+
+.status-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-green { background: #22C55E; }
+.dot-yellow { background: #F59E0B; }
+.dot-red { background: #EF4444; }
+
+.deadline-text {
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.deadline-urgent { color: #EF4444; font-weight: 500; }
+
+.activity-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-icon {
+  width: 30px; height: 30px;
+  border-radius: 6px;
+  background: var(--teal-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.activity-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+.activity-time { font-size: 11.5px; color: var(--text-light); margin-top: 2px; }
+
+/* ── INCORPORATION PAGE ───────────────────────────────────── */
+.incorp-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.steps-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  position: sticky;
+  top: 88px;
+}
+
+.steps-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.step-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 10px 0;
+  position: relative;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 34px;
+  bottom: -10px;
+  width: 1px;
+  background: var(--border);
+}
+
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  flex-shrink: 0;
+  background: var(--white);
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+
+.step-item.active .step-num {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: white;
+}
+
+.step-item.done .step-num {
+  border-color: var(--teal);
+  background: var(--teal-light);
+  color: var(--teal);
+}
+
+.step-info {}
+.step-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-mid);
+  transition: color 0.2s;
+}
+
+.step-item.active .step-name { color: var(--navy); font-weight: 600; }
+.step-item.done .step-name { color: var(--teal); }
+.step-desc { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+
+.form-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.form-panel-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-panel-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.form-panel-sub { font-size: 13px; color: var(--text-mid); }
+
+.form-body { padding: 28px; }
+
+.form-step { display: none; }
+.form-step.active { display: block; }
+
+.field-group { margin-bottom: 20px; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+label .req { color: var(--teal); margin-left: 2px; }
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  color: var(--navy);
+  background: var(--white);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(15,110,86,0.08);
+}
+
+textarea { resize: vertical; min-height: 80px; }
+
+.section-divider {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  margin-top: 8px;
+}
+
+.director-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.director-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.director-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.remove-btn {
+  font-size: 11px;
+  color: #EF4444;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--teal);
+  cursor: pointer;
+  border: 1.5px dashed var(--teal-mid);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  background: var(--teal-light);
+  width: 100%;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+
+.add-btn:hover { background: var(--teal-mid); }
+
+.share-class-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.review-section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.review-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.review-row:last-child { border-bottom: none; }
+.review-key { color: var(--text-mid); }
+.review-val { color: var(--navy); font-weight: 500; text-align: right; max-width: 60%; }
+
+.form-footer {
+  padding: 20px 28px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: white;
+}
+
+.btn-primary:hover { background: #0D5F49; }
+.btn-primary:disabled { background: var(--border); color: var(--text-light); cursor: not-allowed; }
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover { background: var(--bg); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-mid);
+  padding: 9px 12px;
+}
+
+.btn-ghost:hover { color: var(--navy); }
+
+/* ── OUTPUT ──────────────────────────────────────────────── */
+.output-panel {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  margin-top: 24px;
+  grid-column: 1 / -1;
+}
+
+.output-panel.visible { display: block; }
+
+.output-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.output-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 18px;
+  color: var(--navy);
+}
+
+.output-actions { display: flex; gap: 8px; }
+
+.output-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.output-tab {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+}
+
+.output-tab.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+
+.output-tab:hover:not(.active) { color: var(--navy); }
+
+.output-body { padding: 28px; }
+
+.doc-tab { display: none; }
+.doc-tab.active { display: block; }
+
+.doc-content {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--navy);
+  white-space: pre-wrap;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 20px;
+  background: #FAFAF8;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 28px;
+  gap: 16px;
+}
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--teal-mid);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 14px;
+  color: var(--text-mid);
+  text-align: center;
+}
+
+.loading-sub {
+  font-size: 12px;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* ── COMING SOON PAGES ────────────────────────────────────── */
+.coming-soon-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.coming-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.coming-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 22px;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.coming-sub {
+  font-size: 14px;
+  color: var(--text-mid);
+  max-width: 400px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.notify-form {
+  display: flex;
+  gap: 8px;
+  max-width: 340px;
+  width: 100%;
+}
+
+.notify-form input {
+  flex: 1;
+  padding: 9px 12px;
+}
+
+.feature-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 32px;
+  max-width: 600px;
+  text-align: left;
+}
+
+.feature-pill {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: var(--text-mid);
+}
+
+.feature-pill strong { display: block; color: var(--navy); font-size: 13px; margin-bottom: 2px; }
+
+/* ── TOOLTIPS & MISC ─────────────────────────────────────── */
+.info-text {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.required-note {
+  font-size: 11.5px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.required-note span { color: var(--teal); }
+
+.error-msg {
+  color: #EF4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.checklist-item:last-child { border-bottom: none; }
+
+.check-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--teal-light);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.juri-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.juri-option {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--white);
+}
+
+.juri-option:hover { border-color: var(--teal-mid); background: var(--teal-light); }
+
+.juri-option.selected {
+  border-color: var(--teal);
+  background: var(--teal-light);
+}
+
+.juri-flag { font-size: 22px; margin-bottom: 6px; }
+.juri-name { font-size: 12.5px; font-weight: 600; color: var(--navy); }
+.juri-full { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-navy { background: rgba(28,43,58,0.08); color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ──────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">Lex<span>Flow</span></div>
+    <div class="logo-sub">Corporate Formation Platform</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Core</div>
+    <div class="nav-item active" onclick="navigate('dashboard', this)">
+      <span class="nav-icon">⚡</span> Overview
+    </div>
+    <div class="nav-item" onclick="navigate('incorp', this)">
+      <span class="nav-icon">◉</span> New Formation
+      <span class="nav-badge tag-teal" style="background:rgba(77,201,168,0.2);color:#4DC9A8;">Live</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Corporate</div>
+    <div class="nav-item" onclick="navigate('incorp', this)">
+      <span class="nav-icon">🏛</span> Incorporations
+      <span class="nav-badge tag-teal">Live</span>
+    </div>
+    <div class="nav-item" onclick="navigate('minute', this)">
+      <span class="nav-icon">📋</span> Minute Books
+      <span class="nav-badge soon">Soon</span>
+    </div>
+    <div class="nav-item" onclick="navigate('filings', this)">
+      <span class="nav-icon">📁</span> Reg. Filings
+      <span class="nav-badge soon">Soon</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Practice Areas</div>
+    <div class="nav-item" onclick="navigate('realestate', this)">
+      <span class="nav-icon">🏠</span> Real Estate
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" onclick="navigate('litigation', this)">
+      <span class="nav-icon">⚖️</span> Civil Litigation
+      <span class="nav-badge">2</span>
+    </div>
+    <div class="nav-item" onclick="navigate('immigration', this)">
+      <span class="nav-icon">✈️</span> Immigration
+    </div>
+    <div class="nav-item" onclick="navigate('family', this)">
+      <span class="nav-icon">👨‍👩‍👧</span> Family Law
+    </div>
+    <div class="nav-item" onclick="navigate('wills', this)">
+      <span class="nav-icon">📜</span> Wills & Estates
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="firm-card">
+      <div class="firm-avatar">MH</div>
+      <div>
+        <div class="firm-name">Demo Firm</div>
+        <div class="firm-plan">Bay Street · Pro</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ─────────────────────────────────────────────── -->
+<main class="main">
+  <header class="header">
+    <div class="breadcrumb" id="breadcrumb">
+      LexFlow <span>/ Overview</span>
+    </div>
+    <div class="header-right">
+      <div class="header-badge">System Live</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-title">Good morning.</div>
+      <div class="page-sub">Your practice at a glance — 3 deadlines require attention this week.</div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Active Entities</div>
+          <div class="stat-value">24</div>
+          <div class="stat-sub">↑ 3 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Filings Due (30d)</div>
+          <div class="stat-value">7</div>
+          <div class="stat-sub deadline-urgent">3 urgent</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Open Matters</div>
+          <div class="stat-value">18</div>
+          <div class="stat-sub">↑ 2 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Documents Generated</div>
+          <div class="stat-value">142</div>
+          <div class="stat-sub">This quarter</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Entity Portfolio</div>
+            <div class="card-action" onclick="navigate('incorp', document.querySelector('.nav-item:nth-child(1)'))">+ New Incorporation</div>
+          </div>
+          <div class="card-body">
+            <div class="entity-row">
+              <div>
+                <div class="entity-name">1234567 Canada Inc.</div>
+                <div class="entity-type">Federal Corporation</div>
+              </div>
+              <span class="juri-badge">CBCA</span>
+              <div class="status-dot"><span class="dot dot-green"></span> Active</div>
+              <div class="deadline-text">AR due Jun 15</div>
+            </div>
+            <div class="entity-row">
+              <div>
+                <div class="entity-name">Maple Holdings Ltd.</div>
+                <div class="entity-type">Ontario Corporation</div>
+              </div>
+              <span class="juri-badge">OBCA</span>
+              <div class="status-dot"><span class="dot dot-yellow"></span> Review</div>
+              <div class="deadline-text deadline-urgent">AR due May 3</div>
+            </div>
+            <div class="entity-row">
+              <div>
+                <div class="entity-name">Cayman SPV I Ltd.</div>
+                <div class="entity-type">Exempted Company</div>
+              </div>
+              <span class="juri-badge">KY</span>
+              <div class="status-dot"><span class="dot dot-green"></span> Active</div>
+              <div class="deadline-text">ESR due Jul 31</div>
+            </div>
+            <div class="entity-row">
+              <div>
+                <div class="entity-name">Bermuda Fund GP Ltd.</div>
+                <div class="entity-type">Exempted Company</div>
+              </div>
+              <span class="juri-badge">BM</span>
+              <div class="status-dot"><span class="dot dot-green"></span> Active</div>
+              <div class="deadline-text">BEPS due Aug 1</div>
+            </div>
+            <div class="entity-row">
+              <div>
+                <div class="entity-name">Delaware Blocker LLC</div>
+                <div class="entity-type">Limited Liability Company</div>
+              </div>
+              <span class="juri-badge">DE</span>
+              <div class="status-dot"><span class="dot dot-red"></span> Action needed</div>
+              <div class="deadline-text deadline-urgent">FR due May 1</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Activity</div>
+            <div class="card-action">View all</div>
+          </div>
+          <div class="card-body">
+            <div class="activity-item">
+              <div class="activity-icon">🏛</div>
+              <div>
+                <div class="activity-text"><strong>CBCA Incorporation package generated</strong> — 2897432 Canada Inc.</div>
+                <div class="activity-time">Today · 9:42 AM</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📋</div>
+              <div>
+                <div class="activity-text"><strong>First Directors' Resolution</strong> drafted — Maple Holdings Ltd.</div>
+                <div class="activity-time">Yesterday · 3:15 PM</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">⚠️</div>
+              <div>
+                <div class="activity-text"><strong>Filing deadline alert</strong> — Delaware Blocker LLC Annual Report due May 1</div>
+                <div class="activity-time">Yesterday · 9:00 AM</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">📁</div>
+              <div>
+                <div class="activity-text"><strong>Minute book updated</strong> — 1234567 Canada Inc. — share transfer recorded</div>
+                <div class="activity-time">Apr 28 · 11:30 AM</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">🏛</div>
+              <div>
+                <div class="activity-text"><strong>CBCA Incorporation package generated</strong> — Maple Holdings Ltd.</div>
+                <div class="activity-time">Apr 27 · 2:00 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INCORPORATION PAGE -->
+    <div class="page" id="page-incorp">
+      <div class="page-title">Incorporation Generator</div>
+      <div class="page-sub">Generate a complete, jurisdiction-specific incorporation package in minutes.</div>
+
+      <div class="incorp-layout" id="incorp-layout">
+        <!-- Steps panel -->
+        <div class="steps-panel">
+          <div class="steps-title">Progress</div>
+          <div class="step-item active" id="step-ind-1">
+            <div class="step-num">1</div>
+            <div class="step-info">
+              <div class="step-name">Jurisdiction & Company</div>
+              <div class="step-desc">Type, name, fiscal year</div>
+            </div>
+          </div>
+          <div class="step-item" id="step-ind-2">
+            <div class="step-num">2</div>
+            <div class="step-info">
+              <div class="step-name">Directors & Officers</div>
+              <div class="step-desc">Names, addresses, roles</div>
+            </div>
+          </div>
+          <div class="step-item" id="step-ind-3">
+            <div class="step-num">3</div>
+            <div class="step-info">
+              <div class="step-name">Share Structure</div>
+              <div class="step-desc">Classes, rights, restrictions</div>
+            </div>
+          </div>
+          <div class="step-item" id="step-ind-4">
+            <div class="step-num">4</div>
+            <div class="step-info">
+              <div class="step-name">Review & Generate</div>
+              <div class="step-desc">Confirm and create package</div>
+            </div>
+          </div>
+
+          <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border);">
+            <div class="steps-title" style="margin-bottom:12px;">What you'll receive</div>
+            <div class="checklist-item">
+              <div class="check-icon">✓</div>
+              <div>Articles of Incorporation</div>
+            </div>
+            <div class="checklist-item">
+              <div class="check-icon">✓</div>
+              <div>General By-law No. 1</div>
+            </div>
+            <div class="checklist-item">
+              <div class="check-icon">✓</div>
+              <div>First Directors' Resolution</div>
+            </div>
+            <div class="checklist-item">
+              <div class="check-icon">✓</div>
+              <div>Consent to Act as Director</div>
+            </div>
+            <div class="checklist-item">
+              <div class="check-icon">✓</div>
+              <div>Minute Book Checklist</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form panel -->
+        <div class="form-panel" id="form-panel">
+          <div class="form-panel-header">
+            <div class="form-panel-title" id="form-panel-title">Step 1 — Jurisdiction & Company Details</div>
+            <div class="form-panel-sub" id="form-panel-sub">Select your incorporation jurisdiction and enter the company's basic information.</div>
+          </div>
+
+          <div class="form-body">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+              <p class="required-note" style="margin-bottom:0;">Fields marked <span>*</span> are required.</p>
+              <button class="btn btn-secondary" onclick="loadDemoData()" style="font-size:12px;padding:6px 14px;gap:6px;" title="Load sample data for a quick demo">
+                ⚡ Load Demo Data
+              </button>
+            </div>
+
+            <!-- STEP 1 -->
+            <div class="form-step active" id="form-step-1">
+              <div class="section-divider">Select Jurisdiction</div>
+              <div class="juri-selector">
+                <div class="juri-option selected" onclick="selectJuri(this, 'CBCA')" data-juri="CBCA">
+                  <div class="juri-flag">🇨🇦</div>
+                  <div class="juri-name">CBCA</div>
+                  <div class="juri-full">Federal Canada</div>
+                </div>
+                <div class="juri-option" onclick="selectJuri(this, 'OBCA')" data-juri="OBCA">
+                  <div class="juri-flag">🇨🇦</div>
+                  <div class="juri-name">OBCA</div>
+                  <div class="juri-full">Ontario</div>
+                </div>
+                <div class="juri-option" onclick="selectJuri(this, 'Delaware')" data-juri="Delaware">
+                  <div class="juri-flag">🇺🇸</div>
+                  <div class="juri-name">Delaware</div>
+                  <div class="juri-full">USA</div>
+                </div>
+                <div class="juri-option" onclick="selectJuri(this, 'Cayman')" data-juri="Cayman">
+                  <div class="juri-flag">🇰🇾</div>
+                  <div class="juri-name">Cayman</div>
+                  <div class="juri-full">Exempted Co.</div>
+                </div>
+              </div>
+
+              <div class="section-divider">Company Details</div>
+              <div class="field-group">
+                <label>Proposed Company Name <span class="req">*</span></label>
+                <input type="text" id="f-name" placeholder="e.g. Maple Ventures Inc." />
+                <div class="info-text">Include the legal ending (Inc., Ltd., Corp., etc.) or leave it out to auto-assign.</div>
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Province of Registered Office <span class="req">*</span></label>
+                  <select id="f-province">
+                    <option value="">Select province...</option>
+                    <option>Ontario</option>
+                    <option>British Columbia</option>
+                    <option>Alberta</option>
+                    <option>Quebec</option>
+                    <option>Nova Scotia</option>
+                    <option>Manitoba</option>
+                    <option>Saskatchewan</option>
+                    <option>New Brunswick</option>
+                    <option>Newfoundland and Labrador</option>
+                    <option>Prince Edward Island</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label>Fiscal Year End <span class="req">*</span></label>
+                  <select id="f-fiscal">
+                    <option value="">Select...</option>
+                    <option>December 31</option>
+                    <option>March 31</option>
+                    <option>June 30</option>
+                    <option>September 30</option>
+                    <option>January 31</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Minimum Number of Directors</label>
+                  <input type="number" id="f-min-dir" value="1" min="1" />
+                </div>
+                <div class="field-group">
+                  <label>Maximum Number of Directors</label>
+                  <input type="number" id="f-max-dir" value="10" min="1" />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Business Restrictions (optional)</label>
+                <textarea id="f-restrictions" placeholder="Leave blank for 'no restrictions on business the corporation may carry on'..."></textarea>
+              </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="form-step" id="form-step-2">
+              <div class="section-divider">Directors</div>
+              <div id="directors-container">
+                <div class="director-block" data-idx="1">
+                  <div class="director-block-header">
+                    <span class="director-label">Director 1</span>
+                  </div>
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label>First Name <span class="req">*</span></label>
+                      <input type="text" class="dir-first" placeholder="First name" />
+                    </div>
+                    <div class="field-group">
+                      <label>Last Name <span class="req">*</span></label>
+                      <input type="text" class="dir-last" placeholder="Last name" />
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label>Residential Address <span class="req">*</span></label>
+                    <input type="text" class="dir-address" placeholder="Street address, City, Province, Postal Code" />
+                  </div>
+                  <div class="field-group">
+                    <label>Is this director also an officer?</label>
+                    <select class="dir-officer">
+                      <option value="none">No officer role</option>
+                      <option value="President">President</option>
+                      <option value="Secretary">Secretary</option>
+                      <option value="President and Secretary">President and Secretary</option>
+                      <option value="CEO">Chief Executive Officer</option>
+                      <option value="CFO">Chief Financial Officer</option>
+                      <option value="Treasurer">Treasurer</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button class="add-btn" onclick="addDirector()">+ Add Another Director</button>
+
+              <div class="section-divider" style="margin-top:24px;">Registered Office Address</div>
+              <div class="field-group">
+                <label>Registered Office Address <span class="req">*</span></label>
+                <input type="text" id="f-reg-office" placeholder="Street address, City, Province, Postal Code" />
+                <div class="info-text">Must be a physical address in the province of incorporation (not a PO Box).</div>
+              </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="form-step" id="form-step-3">
+              <div class="section-divider">Share Classes</div>
+              <div id="shares-container">
+                <div class="share-class-block" data-idx="1">
+                  <div class="director-block-header">
+                    <span class="director-label">Class A — Common Shares</span>
+                  </div>
+                  <div class="field-row">
+                    <div class="field-group">
+                      <label>Class Name</label>
+                      <input type="text" class="share-class" value="Class A Common Shares" />
+                    </div>
+                    <div class="field-group">
+                      <label>Number Authorized</label>
+                      <select class="share-auth">
+                        <option>Unlimited</option>
+                        <option>100,000,000</option>
+                        <option>10,000,000</option>
+                        <option>1,000,000</option>
+                        <option>Custom</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field-group">
+                    <label>Rights & Restrictions</label>
+                    <textarea class="share-rights" rows="2">Voting rights, entitlement to dividends as declared, entitlement to remaining property on dissolution.</textarea>
+                  </div>
+                </div>
+              </div>
+              <button class="add-btn" onclick="addShareClass()">+ Add Share Class</button>
+
+              <div class="section-divider" style="margin-top:24px;">Initial Share Issuance</div>
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Number of Shares to Issue Initially</label>
+                  <input type="number" id="f-shares-issue" value="100" min="1" />
+                </div>
+                <div class="field-group">
+                  <label>Consideration per Share ($)</label>
+                  <input type="number" id="f-share-price" value="1.00" min="0.01" step="0.01" />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Issue shares to:</label>
+                <input type="text" id="f-shareholder" placeholder="Full legal name of initial shareholder" />
+              </div>
+
+              <div class="section-divider" style="margin-top:20px;">Transfer Restrictions</div>
+              <div class="field-group">
+                <label>Share Transfer Restriction</label>
+                <select id="f-transfer">
+                  <option value="approval">Transfer requires approval of directors or shareholders</option>
+                  <option value="none">No restrictions on transfer</option>
+                  <option value="custom">Custom restriction</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- STEP 4 - REVIEW -->
+            <div class="form-step" id="form-step-4">
+              <div class="section-divider">Review Your Information</div>
+              <p style="font-size:13.5px; color:var(--text-mid); margin-bottom:20px; line-height:1.6;">
+                Please review the details below before generating your incorporation package.
+                The AI will use this information to produce all required documents.
+              </p>
+              <div id="review-content">
+                <!-- Populated by JS -->
+              </div>
+
+              <div style="background:var(--teal-light); border:1px solid var(--teal-mid); border-radius:var(--radius); padding:14px 16px; margin-top:8px;">
+                <div style="font-size:13px; font-weight:600; color:var(--teal); margin-bottom:4px;">⚖️ Legal Note</div>
+                <div style="font-size:12.5px; color:var(--text-mid); line-height:1.5;">
+                  Documents generated are AI-assisted precedents for review by a qualified lawyer before use.
+                  LexFlow does not provide legal advice. Review all documents carefully prior to execution or filing.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button class="btn btn-ghost" id="btn-back" onclick="prevStep()" style="display:none;">← Back</button>
+            <div style="flex:1"></div>
+            <button class="btn btn-primary" id="btn-next" onclick="nextStep()">
+              Continue →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUT PANEL -->
+      <div class="output-panel" id="output-panel">
+        <div class="output-header">
+          <div>
+            <div class="output-title" id="output-title">Incorporation Package — Loading...</div>
+            <div style="font-size:12px; color:var(--text-light); margin-top:2px;" id="output-sub"></div>
+          </div>
+          <div class="output-actions">
+            <button class="btn btn-secondary" onclick="copyOutput()">Copy Active Document</button>
+            <button class="btn btn-primary" onclick="resetForm()">New Incorporation</button>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="loading-state" id="loading-state">
+          <div class="spinner"></div>
+          <div class="loading-text">Generating your incorporation package...</div>
+          <div class="loading-sub" id="loading-sub-text">Drafting Articles of Incorporation</div>
+        </div>
+
+        <!-- Result state -->
+        <div id="result-state" style="display:none;">
+          <div class="output-tabs" id="output-tabs"></div>
+          <div class="output-body">
+            <div id="output-docs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMING SOON PAGES -->
+    <div class="page" id="page-minute">
+      <div class="page-title">Minute Books</div>
+      <div class="page-sub">Digital minute book management — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">📋</div>
+        <div class="coming-title">Minute Book Management</div>
+        <div class="coming-sub">Track all resolutions, share transfers, officer changes, and annual filings in one place. Integrated with your incorporation packages from day one.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>Digital Minute Books</strong>Cloud-based, always current</div>
+          <div class="feature-pill"><strong>Resolution Drafting</strong>AI-generated resolutions</div>
+          <div class="feature-pill"><strong>Filing Deadlines</strong>Automated reminders</div>
+          <div class="feature-pill"><strong>Share Ledger</strong>Full transfer history</div>
+          <div class="feature-pill"><strong>Officer Registry</strong>Changes tracked automatically</div>
+          <div class="feature-pill"><strong>Multi-Jurisdiction</strong>CBCA, OBCA, Delaware, Cayman</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-filings">
+      <div class="page-title">Regulatory Filings</div>
+      <div class="page-sub">Annual returns, beneficial ownership, and compliance filings — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">📁</div>
+        <div class="coming-title">Regulatory Filings Dashboard</div>
+        <div class="coming-sub">Never miss an annual return or compliance filing. Deadline tracking across all jurisdictions, with one-click document generation and filing reminders.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>Annual Returns</strong>CBCA, OBCA, all provinces</div>
+          <div class="feature-pill"><strong>BOI Filings</strong>US beneficial ownership</div>
+          <div class="feature-pill"><strong>Cayman ESR</strong>Economic substance reports</div>
+          <div class="feature-pill"><strong>Bermuda BEPS</strong>Automated tracking</div>
+          <div class="feature-pill"><strong>Deadline Calendar</strong>All entities, all dates</div>
+          <div class="feature-pill"><strong>E-Filing</strong>Direct registry submission</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-realestate">
+      <div class="page-title">Real Estate</div>
+      <div class="page-sub">APS intake to closing — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">🏠</div>
+        <div class="coming-title">Real Estate Workflow Automation</div>
+        <div class="coming-sub">From APS intake through Teranet e-registration and reporting letters. Unity, Terraview, CosmoLex, and DocuSign integrations included.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>APS Intake</strong>Auto-populate from APS</div>
+          <div class="feature-pill"><strong>Title Searches</strong>Teranet integration</div>
+          <div class="feature-pill"><strong>Trust Accounting</strong>LSO By-law 9 compliant</div>
+          <div class="feature-pill"><strong>Statements of Adj.</strong>Auto-calculated</div>
+          <div class="feature-pill"><strong>e-Registration</strong>Teranet direct filing</div>
+          <div class="feature-pill"><strong>Reporting Letters</strong>Generated on closing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-litigation">
+      <div class="page-title">Civil Litigation</div>
+      <div class="page-sub">Docketing, deadlines, and document generation — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">⚖️</div>
+        <div class="coming-title">Civil Litigation Workflow</div>
+        <div class="coming-sub">ACL deadline calendaring, pleadings drafting, JSO e-filing, CanLII and Westlaw research integration. Built for Ontario court workflows.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>ACL Integration</strong>Rules-based deadlines</div>
+          <div class="feature-pill"><strong>Pleadings Drafting</strong>AI-generated documents</div>
+          <div class="feature-pill"><strong>JSO E-Filing</strong>Direct court submission</div>
+          <div class="feature-pill"><strong>TOA / TOC</strong>Auto-generated</div>
+          <div class="feature-pill"><strong>Brief Summaries</strong>AI-powered analysis</div>
+          <div class="feature-pill"><strong>Deadline Alerts</strong>Never miss a date</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-immigration">
+      <div class="page-title">Immigration</div>
+      <div class="page-sub">IRCC filing automation — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">✈️</div>
+        <div class="coming-title">Immigration File Automation</div>
+        <div class="coming-sub">Work permits, PGWPs, PR applications, study permits. IRCC portal integration, IMM form auto-fill, status monitoring, and client notifications.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>IRCC Portal</strong>Auto-filing integration</div>
+          <div class="feature-pill"><strong>IMM Forms</strong>Auto-populated</div>
+          <div class="feature-pill"><strong>Document Checklists</strong>Per application type</div>
+          <div class="feature-pill"><strong>Status Monitoring</strong>Real-time updates</div>
+          <div class="feature-pill"><strong>Client Comms</strong>Automated notifications</div>
+          <div class="feature-pill"><strong>Deadline Tracking</strong>Permit expiry alerts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-family">
+      <div class="page-title">Family Law</div>
+      <div class="page-sub">Forms, agreements, and support calculations — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">👨‍👩‍👧</div>
+        <div class="coming-title">Family Law Workflow</div>
+        <div class="coming-sub">Form 8, 13, 13.1, 15, 25 auto-population. Separation agreements, child support via DivorceMate, NFP calculations. Built for Ontario family court.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>Form Auto-Fill</strong>Form 8, 13, 13.1, 15, 25</div>
+          <div class="feature-pill"><strong>Sep. Agreements</strong>AI-drafted</div>
+          <div class="feature-pill"><strong>DivorceMate</strong>Child support calc</div>
+          <div class="feature-pill"><strong>NFP Calculations</strong>Auto-generated</div>
+          <div class="feature-pill"><strong>Parenting Plans</strong>Structured templates</div>
+          <div class="feature-pill"><strong>Property Division</strong>NFP worksheet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-wills">
+      <div class="page-title">Wills & Estates</div>
+      <div class="page-sub">Will drafting, POAs, and estate administration — coming soon.</div>
+      <div class="coming-soon-wrap">
+        <div class="coming-icon">📜</div>
+        <div class="coming-title">Wills & Estates Workflow</div>
+        <div class="coming-sub">From instruction to execution in 45 minutes. AI-drafted wills, powers of attorney, estate checklists, Notarius remote signing, and probate preparation.</div>
+        <div class="feature-preview">
+          <div class="feature-pill"><strong>Will Drafting</strong>AI-generated in minutes</div>
+          <div class="feature-pill"><strong>POAs</strong>Property & personal care</div>
+          <div class="feature-pill"><strong>Notarius</strong>Remote signing</div>
+          <div class="feature-pill"><strong>Probate Prep</strong>Estate checklists</div>
+          <div class="feature-pill"><strong>5-Year Reviews</strong>Auto-reminders</div>
+          <div class="feature-pill"><strong>Estate Admin</strong>Full workflow</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────
+let currentStep = 1;
+let selectedJuri = 'CBCA';
+let directorCount = 1;
+let shareCount = 1;
+const totalSteps = 4;
+
+
+// ── DEMO DATA ─────────────────────────────────────────────
+function loadDemoData() {
+  // Jurisdiction
+  document.querySelectorAll('.juri-option').forEach(o => o.classList.remove('selected'));
+  document.querySelector('[data-juri="CBCA"]').classList.add('selected');
+  selectedJuri = 'CBCA';
+
+  // Company details
+  document.getElementById('f-name').value = 'Maple Ventures Inc.';
+  document.getElementById('f-province').value = 'Ontario';
+  document.getElementById('f-fiscal').value = 'December 31';
+  document.getElementById('f-min-dir').value = '1';
+  document.getElementById('f-max-dir').value = '10';
+  document.getElementById('f-restrictions').value = '';
+
+  // Director 1
+  const dir1 = document.querySelector('.director-block');
+  dir1.querySelector('.dir-first').value = 'James';
+  dir1.querySelector('.dir-last').value = 'Harrington';
+  dir1.querySelector('.dir-address').value = '123 Bay Street, Toronto, Ontario, M5J 2T3';
+  dir1.querySelector('.dir-officer').value = 'President and Secretary';
+
+  // Registered office
+  document.getElementById('f-reg-office').value = '123 Bay Street, Suite 2100, Toronto, Ontario, M5J 2T3';
+
+  // Shares
+  const share1 = document.querySelector('.share-class-block');
+  share1.querySelector('.share-class').value = 'Class A Common Shares';
+  share1.querySelector('.share-auth').value = 'Unlimited';
+  share1.querySelector('.share-rights').value = 'Voting rights, entitlement to dividends as declared, entitlement to remaining property on dissolution.';
+
+  // Issuance
+  document.getElementById('f-shares-issue').value = '100';
+  document.getElementById('f-share-price').value = '1.00';
+  document.getElementById('f-shareholder').value = 'James Harrington';
+  document.getElementById('f-transfer').value = 'approval';
+
+  // Visual feedback
+  const btn = document.querySelector('[onclick="loadDemoData()"]');
+  btn.textContent = '✓ Demo Data Loaded';
+  btn.style.color = 'var(--teal)';
+  btn.style.borderColor = 'var(--teal)';
+  setTimeout(() => { btn.innerHTML = '⚡ Load Demo Data'; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function navigate(pageId, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  if (el) el.classList.add('active');
+
+  const breadcrumbs = {
+    dashboard: 'LexFlow <span>/ Overview</span>',
+    incorp: 'LexFlow <span>/ Corporate / Incorporations</span>',
+    minute: 'LexFlow <span>/ Corporate / Minute Books</span>',
+    filings: 'LexFlow <span>/ Corporate / Regulatory Filings</span>',
+    realestate: 'LexFlow <span>/ Real Estate</span>',
+    litigation: 'LexFlow <span>/ Civil Litigation</span>',
+    immigration: 'LexFlow <span>/ Immigration</span>',
+    family: 'LexFlow <span>/ Family Law</span>',
+    wills: 'LexFlow <span>/ Wills & Estates</span>',
+  };
+  document.getElementById('breadcrumb').innerHTML = breadcrumbs[pageId] || 'LexFlow';
+}
+
+// ── JURISDICTION SELECTOR ─────────────────────────────────
+function selectJuri(el, juri) {
+  document.querySelectorAll('.juri-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedJuri = juri;
+}
+
+// ── DIRECTORS ─────────────────────────────────────────────
+function addDirector() {
+  directorCount++;
+  const container = document.getElementById('directors-container');
+  const block = document.createElement('div');
+  block.className = 'director-block';
+  block.dataset.idx = directorCount;
+  block.innerHTML = `
+    <div class="director-block-header">
+      <span class="director-label">Director ${directorCount}</span>
+      <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label>First Name <span class="req">*</span></label><input type="text" class="dir-first" placeholder="First name" /></div>
+      <div class="field-group"><label>Last Name <span class="req">*</span></label><input type="text" class="dir-last" placeholder="Last name" /></div>
+    </div>
+    <div class="field-group"><label>Residential Address <span class="req">*</span></label><input type="text" class="dir-address" placeholder="Street address, City, Province, Postal Code" /></div>
+    <div class="field-group">
+      <label>Officer Role</label>
+      <select class="dir-officer">
+        <option value="none">No officer role</option>
+        <option value="President">President</option>
+        <option value="Secretary">Secretary</option>
+        <option value="President and Secretary">President and Secretary</option>
+        <option value="CEO">Chief Executive Officer</option>
+        <option value="CFO">Chief Financial Officer</option>
+        <option value="Treasurer">Treasurer</option>
+      </select>
+    </div>`;
+  container.appendChild(block);
+}
+
+function addShareClass() {
+  shareCount++;
+  const container = document.getElementById('shares-container');
+  const block = document.createElement('div');
+  block.className = 'share-class-block';
+  block.innerHTML = `
+    <div class="director-block-header">
+      <span class="director-label">Share Class ${shareCount}</span>
+      <button class="remove-btn" onclick="removeBlock(this)">Remove</button>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label>Class Name</label><input type="text" class="share-class" placeholder="e.g. Class B Preferred Shares" /></div>
+      <div class="field-group"><label>Number Authorized</label><select class="share-auth"><option>Unlimited</option><option>100,000,000</option><option>10,000,000</option><option>1,000,000</option></select></div>
+    </div>
+    <div class="field-group"><label>Rights & Restrictions</label><textarea class="share-rights" rows="2" placeholder="Describe voting rights, dividend entitlements, redemption rights..."></textarea></div>`;
+  container.appendChild(block);
+}
+
+function removeBlock(btn) {
+  const block = btn.closest('.director-block') || btn.closest('.share-class-block'); if (block) block.remove();
+}
+
+// ── STEP NAVIGATION ───────────────────────────────────────
+function updateStepUI() {
+  for (let i = 1; i <= totalSteps; i++) {
+    const ind = document.getElementById('step-ind-' + i);
+    const form = document.getElementById('form-step-' + i);
+    ind.classList.remove('active', 'done');
+    form.classList.remove('active');
+    if (i < currentStep) ind.classList.add('done');
+    if (i === currentStep) { ind.classList.add('active'); form.classList.add('active'); }
+  }
+
+  document.getElementById('btn-back').style.display = currentStep > 1 ? 'block' : 'none';
+
+  const nextBtn = document.getElementById('btn-next');
+  if (currentStep === totalSteps) {
+    nextBtn.textContent = '⚡ Generate Package';
+    nextBtn.style.background = 'var(--teal)';
+    nextBtn.style.padding = '10px 28px';
+    nextBtn.style.fontSize = '14px';
+    nextBtn.style.fontWeight = '600';
+  } else {
+    nextBtn.textContent = 'Continue →';
+    nextBtn.style.padding = '';
+    nextBtn.style.fontSize = '';
+    nextBtn.style.fontWeight = '';
+  }
+
+  const titles = [
+    '', 'Step 1 — Jurisdiction & Company Details',
+    'Step 2 — Directors & Officers',
+    'Step 3 — Share Structure',
+    'Step 4 — Review & Generate'
+  ];
+  const subs = [
+    '', 'Select your incorporation jurisdiction and enter the company\'s basic information.',
+    'Add all directors and identify any officer roles.',
+    'Define share classes and initial issuance.',
+    'Review your information and generate the complete incorporation package.'
+  ];
+  document.getElementById('form-panel-title').textContent = titles[currentStep];
+  document.getElementById('form-panel-sub').textContent = subs[currentStep];
+}
+
+function nextStep() {
+  if (!validateStep(currentStep)) return;
+  if (currentStep === totalSteps) { generatePackage(); return; }
+  if (currentStep === totalSteps - 1) buildReview();
+  currentStep++;
+  updateStepUI();
+  document.getElementById('form-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function prevStep() {
+  if (currentStep > 1) { currentStep--; updateStepUI(); }
+}
+
+function validateStep(step) {
+  if (step === 1) {
+    if (!document.getElementById('f-name').value.trim()) {
+      alert('Please enter the proposed company name.'); return false;
+    }
+    if (!document.getElementById('f-province').value) {
+      alert('Please select a province for the registered office.'); return false;
+    }
+    if (!document.getElementById('f-fiscal').value) {
+      alert('Please select a fiscal year end.'); return false;
+    }
+  }
+  if (step === 2) {
+    const dirs = document.querySelectorAll('.director-block');
+    for (const d of dirs) {
+      if (!d.querySelector('.dir-first').value.trim() || !d.querySelector('.dir-last').value.trim()) {
+        alert('Please enter full names for all directors.'); return false;
+      }
+      if (!d.querySelector('.dir-address').value.trim()) {
+        alert('Please enter addresses for all directors.'); return false;
+      }
+    }
+    if (!document.getElementById('f-reg-office').value.trim()) {
+      alert('Please enter the registered office address.'); return false;
+    }
+  }
+  return true;
+}
+
+function buildReview() {
+  const directors = [];
+  document.querySelectorAll('.director-block').forEach((d, i) => {
+    const first = d.querySelector('.dir-first').value;
+    const last = d.querySelector('.dir-last').value;
+    const officer = d.querySelector('.dir-officer').value;
+    directors.push(`${first} ${last}${officer !== 'none' ? ' (' + officer + ')' : ''}`);
+  });
+
+  const shares = [];
+  document.querySelectorAll('.share-class-block').forEach(s => {
+    const cls = s.querySelector('.share-class').value;
+    const auth = s.querySelector('.share-auth').value;
+    shares.push(`${cls} — ${auth} authorized`);
+  });
+
+  const html = `
+    <div class="review-section">
+      <div class="review-section-title">Jurisdiction & Company</div>
+      <div class="review-row"><span class="review-key">Jurisdiction</span><span class="review-val">${selectedJuri}</span></div>
+      <div class="review-row"><span class="review-key">Company Name</span><span class="review-val">${document.getElementById('f-name').value}</span></div>
+      <div class="review-row"><span class="review-key">Province</span><span class="review-val">${document.getElementById('f-province').value}</span></div>
+      <div class="review-row"><span class="review-key">Fiscal Year End</span><span class="review-val">${document.getElementById('f-fiscal').value}</span></div>
+      <div class="review-row"><span class="review-key">Directors Range</span><span class="review-val">${document.getElementById('f-min-dir').value} to ${document.getElementById('f-max-dir').value}</span></div>
+    </div>
+    <div class="review-section">
+      <div class="review-section-title">Directors & Officers</div>
+      ${directors.map((d, i) => `<div class="review-row"><span class="review-key">Director ${i+1}</span><span class="review-val">${d}</span></div>`).join('')}
+      <div class="review-row"><span class="review-key">Registered Office</span><span class="review-val">${document.getElementById('f-reg-office').value}</span></div>
+    </div>
+    <div class="review-section">
+      <div class="review-section-title">Share Structure</div>
+      ${shares.map((s, i) => `<div class="review-row"><span class="review-key">Class ${i+1}</span><span class="review-val">${s}</span></div>`).join('')}
+      <div class="review-row"><span class="review-key">Initial Issuance</span><span class="review-val">${document.getElementById('f-shares-issue').value} shares @ $${document.getElementById('f-share-price').value}</span></div>
+      <div class="review-row"><span class="review-key">Initial Shareholder</span><span class="review-val">${document.getElementById('f-shareholder').value || '(to be specified)'}</span></div>
+    </div>`;
+  document.getElementById('review-content').innerHTML = html;
+}
+
+// ── DOCUMENT GENERATION ───────────────────────────────────
+async function generatePackage() {
+  const companyName = document.getElementById('f-name').value.trim();
+  const province = document.getElementById('f-province').value;
+  const fiscal = document.getElementById('f-fiscal').value;
+  const minDir = document.getElementById('f-min-dir').value;
+  const maxDir = document.getElementById('f-max-dir').value;
+  const regOffice = document.getElementById('f-reg-office').value;
+  const restrictions = document.getElementById('f-restrictions').value || 'None';
+  const sharesIssue = document.getElementById('f-shares-issue').value;
+  const sharePrice = document.getElementById('f-share-price').value;
+  const shareholder = document.getElementById('f-shareholder').value || 'to be specified';
+  const transferRestriction = document.getElementById('f-transfer').value;
+
+  const directors = [];
+  document.querySelectorAll('.director-block').forEach(d => {
+    directors.push({
+      name: `${d.querySelector('.dir-first').value.trim()} ${d.querySelector('.dir-last').value.trim()}`,
+      address: d.querySelector('.dir-address').value.trim(),
+      officer: d.querySelector('.dir-officer').value
+    });
+  });
+
+  const shareClasses = [];
+  document.querySelectorAll('.share-class-block').forEach(s => {
+    shareClasses.push({
+      name: s.querySelector('.share-class').value,
+      authorized: s.querySelector('.share-auth').value,
+      rights: s.querySelector('.share-rights').value
+    });
+  });
+
+  const directorText = directors.map((d, i) =>
+    `Director ${i+1}: ${d.name}, ${d.address}${d.officer !== 'none' ? ' — also serving as ' + d.officer : ''}`
+  ).join('\n');
+
+  const shareText = shareClasses.map((s, i) =>
+    `${s.name}: ${s.authorized} authorized. Rights: ${s.rights}`
+  ).join('\n');
+
+  const prompt = `You are a senior Canadian corporate lawyer generating a complete ${selectedJuri} incorporation document package.
+
+COMPANY DETAILS:
+- Jurisdiction: ${selectedJuri}
+- Company Name: ${companyName}
+- Province of Registered Office: ${province}
+- Registered Office: ${regOffice}
+- Fiscal Year End: ${fiscal}
+- Director Range: Minimum ${minDir}, Maximum ${maxDir}
+- Business Restrictions: ${restrictions}
+
+DIRECTORS & OFFICERS:
+${directorText}
+
+SHARE STRUCTURE:
+${shareText}
+Transfer Restrictions: ${transferRestriction}
+
+INITIAL ISSUANCE:
+- ${sharesIssue} shares to be issued to ${shareholder} at $${sharePrice} per share
+
+Generate the following five complete legal documents. Separate each with "===DOCUMENT_BREAK===" on its own line. Use proper Canadian legal language throughout.
+
+DOCUMENT 1: ARTICLES OF INCORPORATION
+Complete Articles of Incorporation under the ${selectedJuri}. Include all required fields: corporate name, province of registered office, classes of shares with full descriptions of rights/restrictions/conditions, any restrictions on share transfer, number of directors, any restrictions on business, other provisions.
+
+DOCUMENT 2: GENERAL BY-LAW NO. 1
+Comprehensive general by-law covering: 1. Interpretation, 2. Registered Office, 3. Directors (number, election, powers, meetings, quorum, remuneration, vacancies), 4. Officers (titles, appointment, duties of President/Secretary/Treasurer), 5. Protection of Directors Officers and Others, 6. Shares and Transfers, 7. Dividends, 8. Meetings of Shareholders (annual, special, notice, quorum, voting), 9. Notices, 10. Financial Year, 11. Execution of Documents.
+
+DOCUMENT 3: FIRST DIRECTORS' RESOLUTION
+Resolution of the first directors covering: adoption of by-laws, appointment of officers with names and roles, banking arrangements, issuance of shares to ${shareholder} (${sharesIssue} shares at $${sharePrice} each), authorization to pay incorporation expenses, and any other organizational matters.
+
+DOCUMENT 4: CONSENT TO ACT AS DIRECTOR
+Individual consent form for each director listed. State each director's full name and address, that they consent to act as director of ${companyName}, the date.
+
+DOCUMENT 5: MINUTE BOOK CHECKLIST
+A comprehensive checklist of all documents required to complete the minute book for ${companyName}, organized by category (Incorporation Documents, Organizational Records, Share Records, Annual Filings). Check off which are generated by this package and which remain to be completed.`;
+
+  // Show output panel
+  const outputPanel = document.getElementById('output-panel');
+  outputPanel.classList.add('visible');
+  document.getElementById('loading-state').style.display = 'flex';
+  document.getElementById('result-state').style.display = 'none';
+  document.getElementById('output-title').textContent = `Incorporation Package — ${companyName}`;
+  document.getElementById('output-sub').textContent = `${selectedJuri} · ${province} · Generated ${new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+  outputPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Animate loading text
+  const loadingMessages = [
+    'Drafting Articles of Incorporation...',
+    'Generating General By-law No. 1...',
+    'Preparing Directors\' Resolution...',
+    'Creating Consent to Act documents...',
+    'Compiling Minute Book Checklist...',
+    'Finalising package...'
+  ];
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    if (msgIdx < loadingMessages.length) {
+      document.getElementById('loading-sub-text').textContent = loadingMessages[msgIdx++];
+    }
+  }, 2200);
+
+  try {
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 8000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    clearInterval(msgInterval);
+
+    if (!response.ok) throw new Error('API error ' + response.status);
+
+    const data = await response.json();
+    const fullText = data.content.map(c => c.text || '').join('');
+    const docParts = fullText.split('===DOCUMENT_BREAK===');
+
+    const docNames = [
+      'Articles of Incorporation',
+      'General By-law No. 1',
+      "First Directors' Resolution",
+      'Consent to Act as Director',
+      'Minute Book Checklist'
+    ];
+
+    const tabsHtml = docParts.map((_, i) =>
+      `<div class="output-tab ${i === 0 ? 'active' : ''}" onclick="switchTab(${i})" id="tab-${i}">${docNames[i] || 'Document ' + (i+1)}</div>`
+    ).join('');
+
+    const docsHtml = docParts.map((doc, i) =>
+      `<div class="doc-tab ${i === 0 ? 'active' : ''}" id="doc-${i}"><div class="doc-content">${escapeHtml(doc.trim())}</div></div>`
+    ).join('');
+
+    document.getElementById('output-tabs').innerHTML = tabsHtml;
+    document.getElementById('output-docs').innerHTML = docsHtml;
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('result-state').style.display = 'block';
+
+  } catch (err) {
+    clearInterval(msgInterval);
+    document.getElementById('loading-state').innerHTML = `
+      <div style="color:#EF4444; text-align:center; padding:20px;">
+        <div style="font-size:24px; margin-bottom:12px;">⚠️</div>
+        <div style="font-size:14px; font-weight:600; margin-bottom:8px;">Generation failed</div>
+        <div style="font-size:13px; color:var(--text-mid); margin-bottom:16px;">${err.message}</div>
+        <button class="btn btn-secondary" onclick="resetForm()">Try Again</button>
+      </div>`;
+  }
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.output-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.doc-tab').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+
+function copyOutput() {
+  const activeDoc = document.querySelector('.doc-tab.active .doc-content');
+  if (activeDoc) {
+    navigator.clipboard.writeText(activeDoc.textContent).then(() => {
+      const btn = document.querySelector('.output-actions .btn-secondary');
+      btn.textContent = '✓ Copied';
+      setTimeout(() => btn.textContent = 'Copy Active Document', 2000);
+    });
+  }
+}
+
+function resetForm() {
+  currentStep = 1;
+  updateStepUI();
+  document.getElementById('output-panel').classList.remove('visible');
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-province').value = '';
+  document.getElementById('f-fiscal').value = '';
+  document.getElementById('f-restrictions').value = '';
+  document.getElementById('f-reg-office').value = '';
+  document.getElementById('f-shareholder').value = '';
+  document.getElementById('form-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Init
+updateStepUI();
+</script>
+</body>
+</html>
